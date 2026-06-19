@@ -23,10 +23,16 @@ const cartSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Auto-calculate totals before saving
-cartSchema.pre('save', function (next) {
-  this.totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
-  this.totalPrice = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  next();
+cartSchema.pre('save', function () {
+  this.totalItems = this.items.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  this.totalPrice = this.items.reduce(
+    (sum, item) => sum + (item.price * item.quantity),
+    0
+  );
 });
 
 module.exports = mongoose.model('Cart', cartSchema);

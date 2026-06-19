@@ -3,7 +3,6 @@ const router  = express.Router();
 const axios   = require('axios');
 const Cart    = require('../models/Cart');
 const verifyToken = require('../middleware/verifyToken');
-
 // Helper — fetch product from Product Service
 const getProduct = async (productId) => {
   const res = await axios.get(`${process.env.PRODUCT_SERVICE_URL}/api/products/${productId}`);

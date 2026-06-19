@@ -13,4 +13,5 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+// ✅ Correct — exports the function directly
 module.exports = verifyToken;
