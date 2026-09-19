@@ -29,13 +29,15 @@ app.get('/health', (req, res) => {
   });
 });
 
+// ── Setup all proxy routes ────────────────────────────────────────────────────
+setupRoutes(app);
+
 // ── Service not found ─────────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ message: `Route ${req.method} ${req.url} not found` });
 });
 
-// ── Setup all proxy routes ────────────────────────────────────────────────────
-setupRoutes(app);
+
 
 app.listen(process.env.PORT, () => {
   console.log(`
