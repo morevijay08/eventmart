@@ -43,7 +43,7 @@ export default function RegisterPage() {
                 value={form[field]}
                 onChange={e => setForm({ ...form, [field]: e.target.value })}
                 required
-                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                 placeholder={`Enter your ${field}`}
               />
             </div>
