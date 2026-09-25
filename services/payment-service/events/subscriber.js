@@ -13,9 +13,17 @@ const connectSubscriber = async () => {
     channel.consume('order.created', async (msg) => {
       if (!msg) return;
 
-      const { orderId, userId, grandTotal, paymentMethod } = JSON.parse(
-        msg.content.toString()
-      );
+      const {
+        orderId,
+        userId,
+        customerEmail,
+        customerName,
+        grandTotal,
+        items,
+        estimatedDelivery,
+        shippingAddress,
+        paymentMethod
+      } = JSON.parse(msg.content.toString());
 
       console.log(`Processing payment for order: ${orderId}`);
 
