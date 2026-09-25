@@ -18,6 +18,22 @@ export default function Navbar() {
           EventMart
         </Link>
 
+        {/* Main navigation */}
+        <div className="hidden md:flex items-center gap-5 ml-6">
+          <Link
+            href="/"
+            className="text-sm font-semibold hover:text-yellow-400 transition-colors"
+          >
+            Home
+          </Link>
+          <Link
+            href="/products"
+            className="text-sm font-semibold hover:text-yellow-400 transition-colors"
+          >
+            Products
+          </Link>
+        </div>
+
         {/* Search bar */}
         <form
           className="hidden md:flex flex-1 max-w-md mx-8"
