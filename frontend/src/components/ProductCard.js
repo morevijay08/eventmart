@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Star, ShoppingCart } from 'lucide-react';
 
-export default function ProductCard({ product, onAddToCart }) {
+export default function ProductCard({ product, onAddToCart, adding = false, added = false }) {
   const discount = product.discount || 0;
 
   return (
@@ -65,11 +65,17 @@ export default function ProductCard({ product, onAddToCart }) {
         {/* Add to Cart */}
         <button
           onClick={() => onAddToCart(product._id)}
-          disabled={product.stock === 0}
+          disabled={product.stock === 0 || adding}
           className="mt-3 w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
         >
           <ShoppingCart size={15} />
-          {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+          {product.stock === 0
+            ? 'Out of Stock'
+            : adding
+              ? 'Adding...'
+              : added
+                ? 'Added to Cart ✓'
+                : 'Add to Cart'}
         </button>
       </div>
     </div>
