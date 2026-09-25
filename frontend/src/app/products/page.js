@@ -30,6 +30,8 @@ export default function ProductsPage() {
   const [loading, setLoading]     = useState(true);
   const [pagination, setPagination] = useState({});
   const [showFilters, setShowFilters] = useState(false);
+  const [addingProductId, setAddingProductId] = useState(null);
+  const [addedProductIds, setAddedProductIds] = useState([]);
 
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
@@ -87,11 +89,28 @@ export default function ProductsPage() {
 
   const handleAddToCart = async (productId) => {
     if (!user) { router.push('/auth/login'); return; }
+
+    setAddingProductId(productId);
     try {
-      await API.post('/api/cart/add', { productId, quantity: 1 });
-      toast.success('Added to cart!');
+      const res = await API.post('/api/cart/add', { productId, quantity: 1 });
+
+      setAddedProductIds(prev => (
+        prev.includes(productId) ? prev : [...prev, productId]
+      ));
+
+      toast.success(
+        res.data.alreadyInCart
+          ? 'Already in cart — quantity updated.'
+          : 'Added to cart!'
+      );
+
+      setTimeout(() => {
+        setAddedProductIds(prev => prev.filter(id => id !== productId));
+      }, 2500);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to add');
+    } finally {
+      setAddingProductId(null);
     }
   };
 
@@ -243,7 +262,13 @@ export default function ProductsPage() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {products.map(p => (
-              <ProductCard key={p._id} product={p} onAddToCart={handleAddToCart} />
+              <ProductCard
+                key={p._id}
+                product={p}
+                onAddToCart={handleAddToCart}
+                adding={addingProductId === p._id}
+                added={addedProductIds.includes(p._id)}
+              />
             ))}
           </div>
         )}
