@@ -8,12 +8,13 @@ const { authLimiter } = require('../middleware/rateLimiter');
 const setupRoutes = (app) => {
 
   // ── AUTH SERVICE (public) ────────────────────────────────────────────────
+  app.use('/api/auth', authLimiter);
+
   app.use(
-    '/api/auth',
-    authLimiter,
     createProxyMiddleware({
-      target: `${process.env.AUTH_SERVICE_URL}/api/auth`,
+      target: process.env.AUTH_SERVICE_URL,
       changeOrigin: true,
+      pathFilter: '/api/auth',
 
       on: {
         error: (err, req, res) => {
