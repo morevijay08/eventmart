@@ -67,7 +67,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Checkout</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Checkout</h1>
 
       <form onSubmit={handlePlaceOrder}>
         <div className="grid md:grid-cols-2 gap-6">
