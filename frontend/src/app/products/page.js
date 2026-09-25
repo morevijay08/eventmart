@@ -208,7 +208,7 @@ export default function ProductsPage() {
         {/* Top bar */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-xl font-bold text-white">
               {searchParams.get('search')
                 ? `Results for "${searchParams.get('search')}"`
                 : filters.category
