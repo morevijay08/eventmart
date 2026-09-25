@@ -64,11 +64,15 @@ router.post('/', verifyToken, async (req, res) => {
 
     // 3. Publish event → Payment Service will pick this up
     await publishEvent('order.created', {
-      orderId:    order._id,
-      userId:     req.user.id,
-      grandTotal: order.grandTotal,
-      items:      order.items,
-      paymentMethod
+      orderId:           order._id,
+      userId:            req.user.id,
+      customerEmail:     req.user.email,
+      customerName:      shippingAddress.fullName,
+      grandTotal:        order.grandTotal,
+      items:             order.items,
+      estimatedDelivery: order.estimatedDelivery,
+      shippingAddress:   order.shippingAddress,
+      paymentMethod:     order.paymentMethod
     });
 
     // 4. Clear the cart after order placed
