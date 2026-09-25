@@ -34,7 +34,7 @@ const orderConfirmedTemplate = ({
       <div style="background:#f0fdf4;padding:28px 32px;border-bottom:1px solid #dcfce7;">
         <p style="margin:0;font-size:28px;">✅</p>
         <h2 style="margin:8px 0 4px;color:#15803d;font-size:20px;">Order Confirmed!</h2>
-        <p style="margin:0;color:#166534;font-size:14px;">Your payment was successful and order is being processed.</p>
+        <p style="margin:0;color:#166534;font-size:14px;">${paymentMethod === 'cod' ? 'Your order has been confirmed and is being processed. Payment will be collected when your order is delivered.' : 'Your payment was successful and your order is being processed.'}</p>
       </div>
 
       <!-- Body -->
@@ -53,6 +53,10 @@ const orderConfirmedTemplate = ({
           <div style="margin-left:32px;">
             <p style="margin:0;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;">Est. Delivery</p>
             <p style="margin:4px 0 0;font-size:13px;font-weight:600;color:#111827;">${new Date(estimatedDelivery).toDateString()}</p>
+          </div>
+          <div style="margin-left:32px;">
+            <p style="margin:0;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;">Payment</p>
+            <p style="margin:4px 0 0;font-size:13px;font-weight:600;color:#111827;">${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Card'}</p>
           </div>
         </div>
 
@@ -77,10 +81,10 @@ const orderConfirmedTemplate = ({
         <div style="margin-top:24px;padding:16px;border:1px solid #e5e7eb;border-radius:8px;">
           <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;">Delivering to</p>
           <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">
-            <strong>${shippingAddress.fullName}</strong><br>
-            ${shippingAddress.street}, ${shippingAddress.city}<br>
-            ${shippingAddress.state} - ${shippingAddress.pincode}<br>
-            📞 ${shippingAddress.phone}
+            <strong>${shippingAddress.fullName || customerName || 'Customer'}</strong><br>
+            ${shippingAddress.street || ''}${shippingAddress.city ? `, ${shippingAddress.city}` : ''}<br>
+            ${shippingAddress.state || ''}${shippingAddress.pincode ? ` - ${shippingAddress.pincode}` : ''}<br>
+            📞 ${shippingAddress.phone || '—'}
           </p>
         </div>
       </div>
