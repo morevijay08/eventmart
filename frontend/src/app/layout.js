@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,10 @@ export default function RootLayout({ children }) {
     >
       <AuthProvider>
         <body className="min-h-full flex flex-col">
-          {children}
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
           <Toaster
             position="top-right"
             toastOptions={{
