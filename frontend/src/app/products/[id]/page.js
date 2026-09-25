@@ -137,7 +137,7 @@ export default function ProductDetailPage() {
 
           {/* Price */}
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl font-bold text-gray-900">
+            <span className="text-3xl font-bold text-white">
               ₹{product.price?.toLocaleString()}
             </span>
             {product.originalPrice && (
