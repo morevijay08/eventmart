@@ -69,7 +69,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+      <h1 className="text-2xl font-bold text-white mb-6">
         Shopping Cart
         <span className="text-gray-400 font-normal text-base ml-2">
           ({summary.totalItems} items)
