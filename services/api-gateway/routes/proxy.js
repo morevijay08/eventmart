@@ -1,4 +1,7 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const {
+  createProxyMiddleware,
+  fixRequestBody
+} = require('http-proxy-middleware');
 const verifyToken = require('../middleware/verifyToken');
 const { authLimiter } = require('../middleware/rateLimiter');
 
