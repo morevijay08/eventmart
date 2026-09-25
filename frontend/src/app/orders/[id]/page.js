@@ -60,7 +60,7 @@ export default function OrderDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold text-white">
             Order #{order._id.toString().slice(-8).toUpperCase()}
           </h1>
           <p className="text-sm text-gray-400 mt-0.5">
