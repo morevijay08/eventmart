@@ -16,6 +16,7 @@ export default function ProductDetailPage() {
   const [selImage, setSelImage] = useState(0);
   const [qty, setQty]           = useState(1);
   const [adding, setAdding]     = useState(false);
+  const [added, setAdded]       = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -36,8 +37,14 @@ export default function ProductDetailPage() {
     if (!user) { router.push('/auth/login'); return; }
     setAdding(true);
     try {
-      await API.post('/api/cart/add', { productId: id, quantity: qty });
-      toast.success('Added to cart!');
+      const res = await API.post('/api/cart/add', { productId: id, quantity: qty });
+      setAdded(true);
+      toast.success(
+        res.data.alreadyInCart
+          ? 'Already in cart — quantity updated.'
+          : 'Added to cart!'
+      );
+      setTimeout(() => setAdded(false), 2500);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to add');
     } finally {
@@ -184,7 +191,7 @@ export default function ProductDetailPage() {
               className="flex-1 flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
               <ShoppingCart size={17} />
-              {adding ? 'Adding...' : 'Add to Cart'}
+              {adding ? 'Adding...' : added ? 'Added to Cart ✓' : 'Add to Cart'}
             </button>
             <button
               onClick={handleBuyNow}
