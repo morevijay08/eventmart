@@ -38,8 +38,16 @@ const connectSubscriber = async () => {
           });
           await publishEvent('payment.success', {
             orderId,
+            userId,
+            customerEmail,
+            customerName,
+            items,
+            grandTotal,
+            estimatedDelivery,
+            shippingAddress,
+            paymentMethod: 'cod',
             paymentId: 'COD',
-            method:    'cod'
+            method: 'cod'
           });
           channel.ack(msg);
           return;
