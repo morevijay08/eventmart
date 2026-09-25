@@ -99,7 +99,7 @@ export default function CheckoutPage() {
                       value={address[field.name]}
                       onChange={handleChange}
                       required
-                      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-900"
+                      className="w-full border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-gray-900"
                       placeholder={field.label}
                     />
                   </div>
