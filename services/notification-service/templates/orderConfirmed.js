@@ -1,8 +1,16 @@
-const orderConfirmedTemplate = ({ orderId, customerName, items, grandTotal, estimatedDelivery, shippingAddress }) => {
+const orderConfirmedTemplate = ({
+  orderId,
+  customerName,
+  items = [],
+  grandTotal = 0,
+  estimatedDelivery,
+  shippingAddress = {},
+  paymentMethod = 'card'
+}) => {
   const itemRows = items.map(item => `
     <tr>
       <td style="padding:10px;border-bottom:1px solid #f0f0f0;">
-        <img src="${item.thumbnail}" width="60" style="border-radius:6px;vertical-align:middle;margin-right:10px;">
+        <img src="${item.thumbnail || ''}" width="60" style="border-radius:6px;vertical-align:middle;margin-right:10px;" alt="">
         ${item.name}
       </td>
       <td style="padding:10px;border-bottom:1px solid #f0f0f0;text-align:center;">${item.quantity}</td>
