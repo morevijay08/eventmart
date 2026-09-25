@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
         {/* Right — Details */}
         <div>
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-1">{product.brand}</p>
-          <h1 className="text-2xl font-bold text-gray-900 leading-snug mb-3">{product.name}</h1>
+          <h1 className="text-2xl font-bold text-white leading-snug mb-3">{product.name}</h1>
 
           {/* Rating */}
           <div className="flex items-center gap-2 mb-4">
