@@ -38,25 +38,36 @@ const connectSubscriber = async () => {
     await channel.assertQueue('payment.success', { durable: true });
     channel.consume('payment.success', async (msg) => {
       if (!msg) return;
-      const { orderId } = JSON.parse(msg.content.toString());
-      console.log(`Notification: payment.success for order ${orderId}`);
+      const {
+        orderId,
+        customerEmail,
+        customerName,
+        items = [],
+        grandTotal = 0,
+        estimatedDelivery,
+        shippingAddress,
+        paymentMethod = 'card'
+      } = JSON.parse(msg.content.toString());
 
-      // In production, fetch order details from Order Service
-      // For now we send a generic confirmation
+      console.log(`Notification: payment.success for order ${orderId} → ${customerEmail}`);
+
+      if (!customerEmail) {
+        console.error(`Email skipped for order ${orderId}: customer email missing`);
+        channel.ack(msg);
+        return;
+      }
+
       await sendEmail({
-        to:      process.env.EMAIL_USER, // replace with real user email
+        to: customerEmail,
         subject: `✅ Order Confirmed — #${orderId.toString().slice(-8).toUpperCase()}`,
-        html:    orderConfirmedTemplate({
+        html: orderConfirmedTemplate({
           orderId,
-          customerName:      'Valued Customer',
-          grandTotal:        0,
-          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-          shippingAddress: {
-            fullName: 'Valued Customer',
-            street:   '—', city: '—',
-            state:    '—', pincode: '—', phone: '—'
-          },
-          items: []
+          customerName: customerName || shippingAddress?.fullName || 'Customer',
+          items,
+          grandTotal,
+          estimatedDelivery: estimatedDelivery || new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+          shippingAddress: shippingAddress || {},
+          paymentMethod
         })
       });
 
