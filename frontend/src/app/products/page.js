@@ -40,6 +40,17 @@ export default function ProductsPage() {
     page:     1
   });
 
+  // Keep filters in sync with URL query parameters such as /products?category=mobiles.
+  useEffect(() => {
+    const category = searchParams.get('category') || '';
+    const brand = searchParams.get('brand') || '';
+
+    setFilters(prev => {
+      if (prev.category === category && prev.brand === brand) return prev;
+      return { ...prev, category, brand, page: 1 };
+    });
+  }, [searchParams]);
+
   useEffect(() => {
     fetchProducts();
   }, [filters]);
