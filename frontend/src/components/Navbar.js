@@ -47,7 +47,7 @@ export default function Navbar() {
             name="q"
             type="text"
             placeholder="Search phones, laptops, audio..."
-            className="w-full px-4 py-2 rounded-l-lg text-gray-900 text-sm outline-none"
+            className="w-full bg-white text-gray-900 placeholder:text-gray-500 px-4 py-2 rounded-l-lg text-sm outline-none"
           />
           <button
             type="submit"
