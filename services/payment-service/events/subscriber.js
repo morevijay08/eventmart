@@ -80,8 +80,16 @@ const connectSubscriber = async () => {
         // confirms payment. For test purposes we fire it immediately.
         await publishEvent('payment.success', {
           orderId,
+          userId,
+          customerEmail,
+          customerName,
+          items,
+          grandTotal,
+          estimatedDelivery,
+          shippingAddress,
+          paymentMethod: 'card',
           paymentId: paymentIntent.id,
-          method:    'card'
+          method: 'card'
         });
 
         console.log(`Payment intent created for order ${orderId}`);
