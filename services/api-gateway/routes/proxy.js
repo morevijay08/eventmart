@@ -7,133 +7,99 @@ const { authLimiter } = require('../middleware/rateLimiter');
 
 const setupRoutes = (app) => {
 
-  // ── AUTH SERVICE (public — no token needed) ───────────────────────────────
-app.use(
-  '/api/auth',
-  authLimiter,
-  createProxyMiddleware({
-    target: process.env.AUTH_SERVICE_URL,
-    changeOrigin: true,
+  // ── AUTH SERVICE (public) ────────────────────────────────────────────────
+  app.use(
+    '/api/auth',
+    authLimiter,
+    createProxyMiddleware({
+      target: `${process.env.AUTH_SERVICE_URL}/api/auth`,
+      changeOrigin: true,
 
-    // Gateway:
-    // /api/auth/register
-    //
-    // Express mount removes /api/auth
-    // Proxy receives: /register
-    //
-    // Auth service expects:
-    // /api/auth/register
-    pathRewrite: {
-      '^/': '/api/auth/'
-    },
-
-    on: {
-        proxyReq: fixRequestBody,
-
-      error: (err, req, res) => {
-        res.status(503).json({
-          message: 'Auth service unavailable'
-        });
+      on: {
+        error: (err, req, res) => {
+          res.status(503).json({
+            message: 'Auth service unavailable'
+          });
+        }
       }
-    }
-  })
-);
+    })
+  );
 
-  app.use('/api/products', (req, res, next) => {
-  // GET = public
-  if (req.method === 'GET') return next();
+  // ── PRODUCT SERVICE ─────────────────────────────────────────────────────
+  app.use(
+    '/api/products',
+    (req, res, next) => {
+      if (req.method === 'GET') return next();
 
-  // POST/PUT/DELETE = protected
-  verifyToken(req, res, next);
-
-}, createProxyMiddleware({
-  target: process.env.PRODUCT_SERVICE_URL,
-  changeOrigin: true,
-
-  pathRewrite: {
-    '^/': '/api/products/'
-  },
-
-  on: {
-    error: (err, req, res) => {
-      res.status(503).json({
-        message: 'Product service unavailable'
-      });
-    }
-  }
-}));
-
-  // ── CART SERVICE (protected — must be logged in) ──────────────────────────
-app.use(
-  '/api/cart',
-  verifyToken,
-  createProxyMiddleware({
-    target: process.env.CART_SERVICE_URL,
-    changeOrigin: true,
-
-    pathRewrite: {
-      '^/': '/api/cart/'
+      verifyToken(req, res, next);
     },
+    createProxyMiddleware({
+      target: `${process.env.PRODUCT_SERVICE_URL}/api/products`,
+      changeOrigin: true,
 
-    on: {
-      proxyReq: fixRequestBody,
-
-      error: (err, req, res) => {
-        res.status(503).json({
-          message: 'Cart service unavailable'
-        });
+      on: {
+        error: (err, req, res) => {
+          res.status(503).json({
+            message: 'Product service unavailable'
+          });
+        }
       }
-    }
-  })
-);
+    })
+  );
 
- // ── ORDER SERVICE (protected) ─────────────────────────────────────────────
-app.use(
-  '/api/orders',
-  verifyToken,
-  createProxyMiddleware({
-    target: process.env.ORDER_SERVICE_URL,
-    changeOrigin: true,
+  // ── CART SERVICE ────────────────────────────────────────────────────────
+  app.use(
+    '/api/cart',
+    verifyToken,
+    createProxyMiddleware({
+      target: `${process.env.CART_SERVICE_URL}/api/cart`,
+      changeOrigin: true,
 
-    pathRewrite: {
-      '^/': '/api/orders/'
-    },
-
-    on: {
-      proxyReq: fixRequestBody,
-
-      error: (err, req, res) => {
-        res.status(503).json({
-          message: 'Order service unavailable'
-        });
+      on: {
+        error: (err, req, res) => {
+          res.status(503).json({
+            message: 'Cart service unavailable'
+          });
+        }
       }
-    }
-  })
-);
+    })
+  );
 
-  // ── PAYMENT SERVICE (protected) ───────────────────────────────────────────
-app.use(
-  '/api/payments',
-  verifyToken,
-  createProxyMiddleware({
-    target: process.env.PAYMENT_SERVICE_URL,
-    changeOrigin: true,
+  // ── ORDER SERVICE ───────────────────────────────────────────────────────
+  app.use(
+    '/api/orders',
+    verifyToken,
+    createProxyMiddleware({
+      target: `${process.env.ORDER_SERVICE_URL}/api/orders`,
+      changeOrigin: true,
 
-    pathRewrite: {
-      '^/': '/api/payments/'
-    },
-
-    on: {
-      proxyReq: fixRequestBody,
-
-      error: (err, req, res) => {
-        res.status(503).json({
-          message: 'Payment service unavailable'
-        });
+      on: {
+        error: (err, req, res) => {
+          res.status(503).json({
+            message: 'Order service unavailable'
+          });
+        }
       }
-    }
-  })
-);
+    })
+  );
+
+  // ── PAYMENT SERVICE ─────────────────────────────────────────────────────
+  app.use(
+    '/api/payments',
+    verifyToken,
+    createProxyMiddleware({
+      target: `${process.env.PAYMENT_SERVICE_URL}/api/payments`,
+      changeOrigin: true,
+
+      on: {
+        error: (err, req, res) => {
+          res.status(503).json({
+            message: 'Payment service unavailable'
+          });
+        }
+      }
+    })
+  );
 
 };
 
