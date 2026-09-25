@@ -56,7 +56,9 @@ router.post('/add', verifyToken, async (req, res) => {
       item => item.productId === productId
     );
 
-    if (existingIndex > -1) {
+    const alreadyInCart = existingIndex > -1;
+
+    if (alreadyInCart) {
       // Update quantity
       const newQty = cart.items[existingIndex].quantity + quantity;
       if (newQty > product.stock) {
@@ -78,7 +80,14 @@ router.post('/add', verifyToken, async (req, res) => {
     }
 
     await cart.save();
-    res.status(200).json({ message: 'Item added to cart', cart });
+
+    res.status(200).json({
+      message: alreadyInCart
+        ? 'Item was already in your cart. Quantity updated.'
+        : 'Item added to cart.',
+      alreadyInCart,
+      cart
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
