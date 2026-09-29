@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import API from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
@@ -21,7 +21,7 @@ const CATEGORIES = [
 
 const BRANDS = ['Apple', 'Samsung', 'Sony', 'Dell', 'Lenovo', 'OnePlus', 'Canon', 'LG', 'JBL', 'boAt', 'Logitech', 'Realme'];
 
-export default function ProductsPage() {
+function ProductsPage() {
   const searchParams = useSearchParams();
   const { user }     = useAuth();
   const router       = useRouter();
@@ -293,5 +293,13 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPageWrapper() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading products...</div>}>
+      <ProductsPage />
+    </Suspense>
   );
 }
